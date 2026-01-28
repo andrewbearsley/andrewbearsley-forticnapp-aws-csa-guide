@@ -23,10 +23,15 @@ This guide covers deploying all three via CloudFormation.
 
 ## Prerequisites
 
-- Access to FortiCNAPP Console (eg via https://forticloud.com)
+- Access to FortiCNAPP Console
 - AWS account access:
   - For Control Tower: management account access in the Control Tower region
   - For standalone: account with CloudFormation and IAM permissions
+
+### Logging into FortiCNAPP
+
+1. Log in to <a href="https://forticloud.com" target="_blank">FortiCloud</a>
+2. Navigate to Services > Show More > Lacework FortiCNAPP
 
 ## Step 1: AWS Config and CloudTrail Integration
 
