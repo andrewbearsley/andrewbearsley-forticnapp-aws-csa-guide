@@ -36,9 +36,9 @@ This integration gives FortiCNAPP access to AWS resource inventory (Config) and 
 
 For AWS Organizations using Control Tower, deploy via the Control Tower CloudFormation template. This enrolls all existing and future accounts automatically.
 
-Docs: [AWS Control Tower Integration Using CloudFormation](https://docs.fortinet.com/document/forticnapp/latest/administration-guide/399671/aws-control-tower-integration-using-cloudformation)
+Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/399671/aws-control-tower-integration-using-cloudformation" target="_blank">AWS Control Tower Integration Using CloudFormation</a>
 
-Reference: [forticnapp-cloud-integration](https://github.com/andrewbearsley/forticnapp-cloud-integration)
+Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integration" target="_blank">forticnapp-cloud-integration</a>
 
 1. Create a FortiCNAPP API key: in the FortiCNAPP Console, navigate to Settings > API Keys > Add New. Download the API key JSON file.
 
@@ -108,7 +108,7 @@ Reference: [forticnapp-cloud-integration](https://github.com/andrewbearsley/fort
 
 For standalone AWS accounts or organizations not using Control Tower, deploy using the standard CloudFormation integration.
 
-Docs: [AWS Integration Using CloudFormation](https://docs.fortinet.com/document/forticnapp/latest/administration-guide/177498/aws-integration-using-cloudformation)
+Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/177498/aws-integration-using-cloudformation" target="_blank">AWS Integration Using CloudFormation</a>
 
 1. Log into the AWS account where you want to deploy the integration.
 
@@ -126,9 +126,9 @@ Docs: [AWS Integration Using CloudFormation](https://docs.fortinet.com/document/
 
 Agentless Workload Scanning provides vulnerability assessment of EC2 instances by creating and analyzing EBS volume snapshots, without installing agents on target systems.
 
-Docs: [Agentless Workload Scanning for AWS](https://docs.fortinet.com/document/forticnapp/latest/administration-guide/122712/prerequisites)
+Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/122712/prerequisites" target="_blank">Agentless Workload Scanning for AWS</a>
 
-Reference: [forticnapp-aws-agentless-workload-scanning-guide](https://github.com/andrewbearsley/forticnapp-aws-agentless-workload-scanning-guide)
+Reference: <a href="https://github.com/andrewbearsley/forticnapp-aws-agentless-workload-scanning-guide" target="_blank">forticnapp-aws-agentless-workload-scanning-guide</a>
 
 ### CloudFormation Deployment
 
@@ -149,13 +149,13 @@ Reference: [forticnapp-aws-agentless-workload-scanning-guide](https://github.com
 
 6. Return to the FortiCNAPP Console to verify the scanning status.
 
-See the [agentless workload scanning guide](https://github.com/andrewbearsley/forticnapp-aws-agentless-workload-scanning-guide) for detailed architecture and deployment options including Terraform.
+See the <a href="https://github.com/andrewbearsley/forticnapp-aws-agentless-workload-scanning-guide" target="_blank">agentless workload scanning guide</a> for detailed architecture and deployment options including Terraform.
 
 ## Step 3 (Optional): Agent Installation
 
 The FortiCNAPP agent provides runtime threat detection, file integrity monitoring, and deeper host-level visibility beyond what agentless scanning covers.
 
-Docs: [Lacework Agent AWS Install](https://docs.fortinet.com/document/forticnapp/latest/cli-reference/784655/lacework-agent-aws-install)
+Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/cli-reference/784655/lacework-agent-aws-install" target="_blank">Lacework Agent AWS Install</a>
 
 The Lacework CLI supports three installation methods for AWS EC2 instances:
 
@@ -256,10 +256,10 @@ After completing all steps, you should see:
 
 ## Resources
 
-- [FortiCNAPP Documentation](https://docs.fortinet.com/product/forticnapp)
-- [FortiCNAPP Administration Guide](https://docs.fortinet.com/document/forticnapp/latest/administration-guide)
-- [FortiCNAPP CLI Reference](https://docs.fortinet.com/document/forticnapp/latest/cli-reference)
-- [AWS Control Tower Integration](https://docs.fortinet.com/document/forticnapp/latest/administration-guide/399671/aws-control-tower-integration-using-cloudformation)
-- [AWS Integration (CloudFormation)](https://docs.fortinet.com/document/forticnapp/latest/administration-guide/177498/aws-integration-using-cloudformation)
-- [Agentless Workload Scanning Guide](https://github.com/andrewbearsley/forticnapp-aws-agentless-workload-scanning-guide)
-- [FortiCNAPP Cloud Integration Setup](https://github.com/andrewbearsley/forticnapp-cloud-integration)
+- <a href="https://docs.fortinet.com/product/forticnapp" target="_blank">FortiCNAPP Documentation</a>
+- <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide" target="_blank">FortiCNAPP Administration Guide</a>
+- <a href="https://docs.fortinet.com/document/forticnapp/latest/cli-reference" target="_blank">FortiCNAPP CLI Reference</a>
+- <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/399671/aws-control-tower-integration-using-cloudformation" target="_blank">AWS Control Tower Integration</a>
+- <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/177498/aws-integration-using-cloudformation" target="_blank">AWS Integration (CloudFormation)</a>
+- <a href="https://github.com/andrewbearsley/forticnapp-aws-agentless-workload-scanning-guide" target="_blank">Agentless Workload Scanning Guide</a>
+- <a href="https://github.com/andrewbearsley/forticnapp-cloud-integration" target="_blank">FortiCNAPP Cloud Integration Setup</a>
