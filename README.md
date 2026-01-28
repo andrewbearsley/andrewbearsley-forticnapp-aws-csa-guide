@@ -14,13 +14,12 @@ This guide covers deploying all three via CloudFormation.
 
 ## Quickstart
 
-1. Create a FortiCNAPP API key (Settings > API Keys > Add New)
-2. Deploy Config and CloudTrail integration via CloudFormation
+1. Deploy Config and CloudTrail integration via CloudFormation
    - With Control Tower: [Step 1a](#with-aws-control-tower)
    - Without Control Tower: [Step 1b](#without-aws-control-tower)
-3. Deploy Agentless Workload Scanning via CloudFormation: [Step 2](#step-2-agentless-workload-scanning)
-4. (Optional) Install agents on target instances: [Step 3](#step-3-optional-agent-installation)
-5. Validate the deployment: [Validation](#validating-the-deployment)
+2. Deploy Agentless Workload Scanning via CloudFormation: [Step 2](#step-2-agentless-workload-scanning)
+3. (Optional) Install agents on target instances: [Step 3](#step-3-optional-agent-installation)
+4. Validate the deployment: [Validation](#validating-the-deployment)
 
 ## Prerequisites
 
@@ -28,7 +27,6 @@ This guide covers deploying all three via CloudFormation.
 - AWS account access:
   - For Control Tower: management account access in the Control Tower region
   - For standalone: account with CloudFormation and IAM permissions
-- FortiCNAPP API key (JSON file with account, keyId, secret)
 
 ## Step 1: AWS Config and CloudTrail Integration
 
@@ -42,23 +40,25 @@ Docs: [AWS Control Tower Integration Using CloudFormation](https://docs.fortinet
 
 Reference: [forticnapp-cloud-integration](https://github.com/andrewbearsley/forticnapp-cloud-integration)
 
-1. Log into the AWS Control Tower management account in the region where Control Tower is deployed.
+1. Create a FortiCNAPP API key: in the FortiCNAPP Console, navigate to Settings > API Keys > Add New. Download the API key JSON file.
 
-2. Gather Control Tower details:
+2. Log into the AWS Control Tower management account in the region where Control Tower is deployed.
+
+3. Gather Control Tower details:
    - Log Archive Account ID (eg 123456789012)
    - Log Archive Account Name (eg aws-controltower-LogArchiveAccount)
    - Audit Account ID (eg 123456789012)
    - Audit Account Name (eg aws-controltower-AuditAccount)
    - CloudTrail Name (eg aws-controltower-BaselineCloudTrail)
 
-3. Check if the CloudTrail S3 bucket (in the Log Archive Account) has KMS encryption enabled.
+4. Check if the CloudTrail S3 bucket (in the Log Archive Account) has KMS encryption enabled.
    - If enabled, note the KMS Key Identifier ARN (eg arn:aws:kms:us-west-2:123456789012:key/12345678-1234-1234-1234-123456789012)
 
-4. Check if the CloudTrail S3 bucket has SNS notifications enabled.
+5. Check if the CloudTrail S3 bucket has SNS notifications enabled.
    - If enabled, note the SNS Topic ARN
    - If not enabled, create a new SNS topic and note the ARN
 
-5. Launch the CloudFormation stack:
+6. Launch the CloudFormation stack:
 
    https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?templateURL=https://lacework-alliances.s3.us-west-2.amazonaws.com/lacework-control-tower-cfn/templates/control-tower-integration.template.yaml
 
@@ -72,9 +72,9 @@ Reference: [forticnapp-cloud-integration](https://github.com/andrewbearsley/fort
    - KMS Key Identifier ARN (if CloudTrail logs are encrypted)
    - Log Account Name and Audit Account Name (update if necessary)
 
-6. Create the stack and wait for completion.
+7. Create the stack and wait for completion.
 
-7. (Optional) Update the KMS Key Policy for cross-account role access. This is only required if CloudTrail S3 logs are KMS encrypted.
+8. (Optional) Update the KMS Key Policy for cross-account role access. This is only required if CloudTrail S3 logs are KMS encrypted.
 
    Find the Lacework role ARN:
 
