@@ -4,7 +4,7 @@ For standalone AWS accounts or organizations not using Control Tower, deploy usi
 
 Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/177498/aws-integration-using-cloudformation" target="_blank">AWS Integration Using CloudFormation</a>
 
-## Prerequisites (for existing CloudTrail integration)
+## Prerequisites (for integrating with an existing CloudTrail)
 
 If you plan to use CloudTrail+Configuration with an existing trail, gather these details first:
 
