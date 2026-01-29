@@ -12,8 +12,12 @@ Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administrati
 
 3. Select Amazon Web Services, then select CloudFormation as the deployment method.
 
-4. Follow the guided setup to launch the CloudFormation stack. The console provides a pre-configured template URL with your account parameters.
+4. Choose integration type:
+   - CloudTrail+Configuration: for accounts with CloudTrail enabled
+   - Configuration: for accounts without CloudTrail
 
-5. Create the stack and wait for completion.
+5. Follow the guided setup to launch the CloudFormation stack. The console provides a pre-configured template URL with your account parameters.
 
-6. Return to the FortiCNAPP Console to verify the integration status.
+6. Create the stack and wait for completion.
+
+7. Return to the FortiCNAPP Console to verify the integration status.
