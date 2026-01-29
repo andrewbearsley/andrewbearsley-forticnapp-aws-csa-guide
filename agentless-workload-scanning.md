@@ -56,7 +56,7 @@ Important: The ExternalId is hardcoded in the template and cannot be changed aft
 
 ## Using Existing VPC (Optional)
 
-CloudFormation creates a new VPC by default. To use an existing VPC, update the ECS service after deployment.
+CloudFormation creates a new VPC per region by default. To use an existing VPC, update the ECS service after deployment. Repeat this process for each region.
 
 ### Requirements
 
@@ -132,7 +132,7 @@ aws ecs describe-tasks \
 ## Resources Provisioned
 
 Scanning Account Stack:
-- VPC with network infrastructure
+- VPC with network infrastructure (one per selected region)
 - ECS cluster and service
 - S3 bucket for scan results
 - IAM roles (cross-account role, task role, task execution role)
