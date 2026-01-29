@@ -23,10 +23,25 @@ This guide covers deploying all three via CloudFormation.
 
 ## Prerequisites
 
-- Access to FortiCNAPP Console
+- FortiCNAPP license
 - AWS account access:
   - For Control Tower: management account access in the Control Tower region
   - For standalone: account with CloudFormation and IAM permissions
+
+### Setting Up FortiCNAPP
+
+1. Create a FortiCloud account (if you don't already have one):
+   - Go to <a href="https://www.forticloud.com" target="_blank">forticloud.com</a> > Create Account
+
+2. Register your FortiCNAPP license:
+   - In FortiCloud, navigate to Dashboard > Register Now
+
+3. Create FortiCNAPP instance (first time only):
+   - Navigate to Services > Show More > Lacework FortiCNAPP
+   - Choose a region (eg AS for Singapore, AU for Australia)
+   - Wait a few minutes for the instance to be provisioned
+
+4. (Optional) Add additional users: see [Adding FortiCNAPP Users](adding-forticnapp-users.md)
 
 ### Logging into FortiCNAPP
 
