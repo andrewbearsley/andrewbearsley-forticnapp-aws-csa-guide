@@ -13,9 +13,7 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
    - S3 bucket name (under Storage location)
    - SNS topic ARN (under SNS notification delivery, if enabled)
 
-If SNS notifications are not enabled on your trail, you will need to either:
-- Enable SNS notifications on the existing trail, or
-- Let FortiCNAPP create a new trail during setup
+If SNS notifications are not enabled on your trail, you will need to enable them before proceeding.
 
 ## Steps
 
