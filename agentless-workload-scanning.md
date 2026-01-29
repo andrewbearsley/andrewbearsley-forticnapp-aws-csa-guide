@@ -1,6 +1,6 @@
 # Agentless Workload Scanning
 
-This guide covers deploying FortiCNAPP AWS Agentless Workload Scanning using CloudFormation.
+This guide covers deploying FortiCNAPP AWS Agentless Workload Scanning using CloudFormation. These instructions apply to AWS Organizations both with and without Control Tower.
 
 Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/966589/agentless-workload-scanning" target="_blank">Deploying Agentless Workload Scanning on AWS</a>
 
