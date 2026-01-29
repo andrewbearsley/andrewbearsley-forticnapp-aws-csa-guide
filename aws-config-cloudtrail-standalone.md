@@ -34,6 +34,13 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 
 5. Follow the guided setup to launch the CloudFormation stack. The console provides a pre-configured template URL with your account parameters.
 
+   For existing CloudTrail integration:
+   - Create new trail?: No
+   - Existing Trail Setup:
+     - Bucket name: enter the S3 bucket name from prerequisites
+     - Topic ARN: enter the SNS topic ARN from prerequisites
+   - Leave other settings as default
+
 6. Create the stack and wait for completion.
 
 7. Return to the FortiCNAPP Console to verify the integration status.
