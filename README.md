@@ -17,7 +17,8 @@ This guide covers integration via CloudFormation.
 1. Set up FortiCNAPP (account, license, instance): [Step 1](#setting-up-forticnapp)
 2. Deploy Config and CloudTrail integration via CloudFormation
    - With Control Tower: [Step 2a](aws-config-cloudtrail-control-tower.md)
-   - Without Control Tower: [Step 2b](aws-config-cloudtrail-standalone.md)
+   - AWS Organizations (without Control Tower): [Step 2b](aws-config-cloudtrail-org.md)
+   - Single account: [Step 2c](aws-config-cloudtrail-standalone.md)
 3. Deploy Agentless Workload Scanning via CloudFormation: [Step 3](agentless-workload-scanning.md)
 4. (Optional) Install agents on target instances: [Step 4](agent-installation.md)
 5. Validate the deployment: [Validation](#validating-the-deployment)
@@ -27,7 +28,8 @@ This guide covers integration via CloudFormation.
 - FortiCNAPP license
 - AWS account access:
   - For Control Tower: management account access in the Control Tower region
-  - For standalone: account with CloudFormation and IAM permissions
+  - For Organizations (no Control Tower): management account access
+  - For single account: account with CloudFormation and IAM permissions
 
 ### Setting Up FortiCNAPP
 
@@ -54,7 +56,8 @@ This guide covers integration via CloudFormation.
 | Step | Guide | Description |
 |------|-------|-------------|
 | 2a | [Config and CloudTrail - Control Tower](aws-config-cloudtrail-control-tower.md) | AWS Organizations with Control Tower |
-| 2b | [Config and CloudTrail - Standalone](aws-config-cloudtrail-standalone.md) | Single account or org without Control Tower |
+| 2b | [Config and CloudTrail - Organizations](aws-config-cloudtrail-org.md) | AWS Organizations without Control Tower |
+| 2c | [Config and CloudTrail - Single Account](aws-config-cloudtrail-standalone.md) | Single AWS account |
 | 3 | [Agentless Workload Scanning](agentless-workload-scanning.md) | Vulnerability scanning of EC2 instances |
 | 4 | [Agent Installation](agent-installation.md) | (Optional) Runtime threat detection |
 

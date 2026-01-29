@@ -10,7 +10,7 @@ Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administrati
 
 2. In the FortiCNAPP Console, navigate to Settings > Integrations > Cloud Accounts > Add New.
 
-3. Select AWS, then select CloudFormation as the deployment method.
+3. Select Amazon Web Services, then select CloudFormation as the deployment method.
 
 4. Follow the guided setup to launch the CloudFormation stack. The console provides a pre-configured template URL with your account parameters.
 
