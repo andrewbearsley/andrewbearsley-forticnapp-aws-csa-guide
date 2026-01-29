@@ -30,18 +30,19 @@ Deploy from FortiCNAPP UI in your scanning account (where scanning infrastructur
 
 ## Step 2: Deploy Snapshot Roles (Organization)
 
-Deploy from your management account using StackSets to create snapshot roles in monitored accounts:
+Deploy a CloudFormation stack from your management account that creates a StackSet to deploy snapshot roles across monitored accounts:
 
-1. Return to FortiCNAPP UI setup wizard
-2. In Step 2 "Integrate AWS Scanning Account with your AWS Organization", click Launch Stack
-3. Fill in parameters using outputs from Step 1:
+1. Log into AWS Console with your management account
+2. Return to FortiCNAPP UI setup wizard
+3. In Step 2 "Integrate AWS Scanning Account with your AWS Organization", click Launch Stack (this opens CloudFormation in your management account)
+4. Fill in parameters using outputs from Step 1:
    - CrossAccountRoleArn: from Step 1
    - ECSTaskRoleArn: from Step 1
    - S3BucketArn: from Step 1
    - ExternalId: from Step 1
    - MonitoredAccountDeployment: `SERVICE_MANAGED`
    - MonitoredAccountIds: `r-xxxxx` (your Organization root ID or OU IDs)
-4. Click Create stack and wait for completion
+5. Click Create stack and wait for completion
 
 ## Step 3: Verify Integration Status
 
