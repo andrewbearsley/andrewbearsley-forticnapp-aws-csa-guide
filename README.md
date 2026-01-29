@@ -20,7 +20,7 @@ This guide covers integration via CloudFormation.
    - [AWS Organizations without Control Tower](aws-config-cloudtrail-org.md)
    - [Individual AWS accounts](aws-config-cloudtrail-standalone.md)
 3. [Deploy Agentless Workload Scanning](agentless-workload-scanning.md)
-4. (Optional) [Install agents on target instances](agent-installation.md)
+4. [Install agents on target instances](agent-installation.md) (Optional) 
 5. [Validate the deployment](#validating-the-deployment)
 
 ## Prerequisites
