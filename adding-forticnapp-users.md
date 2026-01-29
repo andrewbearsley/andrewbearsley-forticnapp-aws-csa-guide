@@ -24,8 +24,11 @@ Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administrati
    - Click Next
    - Review and Confirm
 
-4. Assign FortiCNAPP user group:
-   - In FortiCNAPP, navigate to Settings > Users
+4. Log in to FortiCNAPP:
+   - In <a href="https://forticloud.com" target="_blank">FortiCloud</a>, navigate to Services > Show More > Lacework FortiCNAPP
+
+5. Assign FortiCNAPP user group:
+   - Navigate to Settings > Users
    - Find the user, click ... > Edit
    - Select user group: Admin
    - Save
