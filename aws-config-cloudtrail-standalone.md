@@ -11,9 +11,17 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 1. In the AWS Console, navigate to CloudTrail > Trails
 2. Select your trail and note:
    - S3 bucket name (under Storage location)
-   - SNS topic ARN (under SNS notification delivery, if enabled)
+   - SNS topic ARN (under SNS notification delivery)
 
-If SNS notifications are not enabled on your trail, you will need to enable them before proceeding.
+### Enabling SNS notifications (if not already enabled)
+
+1. In the AWS Console, navigate to CloudTrail > Trails
+2. Select your trail, click Edit
+3. Scroll to SNS notification delivery
+4. Check "Enabled"
+5. Either select an existing SNS topic or create a new one
+6. Save changes
+7. Note the SNS topic ARN for use during FortiCNAPP setup
 
 ## Steps
 
