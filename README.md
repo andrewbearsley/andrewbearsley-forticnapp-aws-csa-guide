@@ -14,12 +14,13 @@ This guide covers integration via CloudFormation.
 
 ## Quickstart
 
-1. Deploy Config and CloudTrail integration via CloudFormation
-   - With Control Tower: [Step 1a](aws-config-cloudtrail-control-tower.md)
-   - Without Control Tower: [Step 1b](aws-config-cloudtrail-standalone.md)
-2. Deploy Agentless Workload Scanning via CloudFormation: [Step 2](agentless-workload-scanning.md)
-3. (Optional) Install agents on target instances: [Step 3](agent-installation.md)
-4. Validate the deployment: [Validation](#validating-the-deployment)
+1. [Set up FortiCNAPP](#setting-up-forticnapp) (account, license, instance)
+2. Deploy Config and CloudTrail integration via CloudFormation
+   - With Control Tower: [Step 2a](aws-config-cloudtrail-control-tower.md)
+   - Without Control Tower: [Step 2b](aws-config-cloudtrail-standalone.md)
+3. Deploy Agentless Workload Scanning via CloudFormation: [Step 3](agentless-workload-scanning.md)
+4. (Optional) Install agents on target instances: [Step 4](agent-installation.md)
+5. Validate the deployment: [Validation](#validating-the-deployment)
 
 ## Prerequisites
 
@@ -52,10 +53,10 @@ This guide covers integration via CloudFormation.
 
 | Step | Guide | Description |
 |------|-------|-------------|
-| 1a | [Config and CloudTrail - Control Tower](aws-config-cloudtrail-control-tower.md) | AWS Organizations with Control Tower |
-| 1b | [Config and CloudTrail - Standalone](aws-config-cloudtrail-standalone.md) | Single account or org without Control Tower |
-| 2 | [Agentless Workload Scanning](agentless-workload-scanning.md) | Vulnerability scanning of EC2 instances |
-| 3 | [Agent Installation](agent-installation.md) | (Optional) Runtime threat detection |
+| 2a | [Config and CloudTrail - Control Tower](aws-config-cloudtrail-control-tower.md) | AWS Organizations with Control Tower |
+| 2b | [Config and CloudTrail - Standalone](aws-config-cloudtrail-standalone.md) | Single account or org without Control Tower |
+| 3 | [Agentless Workload Scanning](agentless-workload-scanning.md) | Vulnerability scanning of EC2 instances |
+| 4 | [Agent Installation](agent-installation.md) | (Optional) Runtime threat detection |
 
 ## How It Works
 
