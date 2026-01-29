@@ -16,9 +16,9 @@ This guide covers integration via CloudFormation.
 
 1. Set up FortiCNAPP (account, license, instance): [Step 1](#setting-up-forticnapp)
 2. Deploy Config and CloudTrail integration via CloudFormation
-   - With Control Tower: [Step 2a](aws-config-cloudtrail-control-tower.md)
-   - AWS Organizations (without Control Tower): [Step 2b](aws-config-cloudtrail-org.md)
-   - Single account: [Step 2c](aws-config-cloudtrail-standalone.md)
+   - AWS Organizations with Control Tower: [Step 2a](aws-config-cloudtrail-control-tower.md)
+   - AWS Organizations without Control Tower: [Step 2b](aws-config-cloudtrail-org.md)
+   - Individual AWS accounts: [Step 2c](aws-config-cloudtrail-standalone.md)
 3. Deploy Agentless Workload Scanning via CloudFormation: [Step 3](agentless-workload-scanning.md)
 4. (Optional) Install agents on target instances: [Step 4](agent-installation.md)
 5. Validate the deployment: [Validation](#validating-the-deployment)
