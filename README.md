@@ -33,17 +33,23 @@ This guide covers integration via CloudFormation.
 
 ### Provision FortiCNAPP
 
-1. Create a FortiCloud account (if you don't already have one):
+1. Gather details: Registration code from license email 
+   - See email from: do-not-reply-contract@fortinet.com
+   - Unzip the license file to get the registration code
+
+2. Create a FortiCloud account (if you don't already have one):
    - Go to <a href="https://www.forticloud.com" target="_blank">forticloud.com</a> > Create Account
 
-2. Register your FortiCNAPP license:
-   - In FortiCloud, navigate to Dashboard > Register Now
-   - Paste registration code from license email
-   - Next, accept the terms and conditions, Done
+3. Register your FortiCNAPP license:
+   - In FortiCloud, 
+   - Navigate to Dashboard > Register Now
+   - Enter registration code from license email
+   - Follow prompts to complete registration
+   - Verify registration in Account Services page
 
 3. Create FortiCNAPP instance (first time only):
    - Navigate to Services > Show More > Lacework FortiCNAPP
-   - Choose a region (eg AS for Singapore, AU for Australia)
+   - Choose a region (eg AS for Singapore, AU for Australia, EU for Europe, US for USA)
    - Wait a few minutes for the instance to be provisioned
 
 4. (Optional) Add additional users: see [Adding FortiCNAPP Users](adding-forticnapp-users.md)
@@ -52,6 +58,7 @@ This guide covers integration via CloudFormation.
 
 1. Log in to <a href="https://forticloud.com" target="_blank">FortiCloud</a>
 2. Navigate to Services > Show More > Lacework FortiCNAPP
+3. If the FortiCNAPP onboarding wizard is displayed, choose 'Skip' and 'Go to the platform'
 
 ## Deployment Guides
 
@@ -104,14 +111,6 @@ The FortiCNAPP agent runs on EC2 instances and provides:
 - Host intrusion detection
 
 ## Validating the Deployment
-
-### CLI Validation
-
-```bash
-lacework cloud-account list
-```
-
-This lists all configured integrations and their status.
 
 ### Console Validation
 
