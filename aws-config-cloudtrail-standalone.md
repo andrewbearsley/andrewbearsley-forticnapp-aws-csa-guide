@@ -15,8 +15,7 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 3. Enable SNS notifications (if not already enabled):
    - Select your trail, click Edit
    - Scroll to SNS notification delivery
-   - Check "Enabled"
-   - Create a new SNS topic: Check "New"
+   - Check "Enabled", and select "New"
    - Save changes
    - Note the SNS topic ARN for use during FortiCNAPP setup
 
