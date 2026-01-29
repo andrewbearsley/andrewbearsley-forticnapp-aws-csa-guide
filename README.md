@@ -6,9 +6,9 @@ Deployment guide for running a FortiCNAPP Cloud Security Assessment on AWS using
 
 A FortiCNAPP Cloud Security Assessment (CSA) provides visibility into your AWS environment through three capabilities:
 
-- Config and CloudTrail integration: resource inventory, compliance posture, and audit log analysis
-- Agentless workload scanning: vulnerability assessment of EC2 instances without installing agents
-- Agent installation (optional): runtime threat detection, file integrity monitoring, and host-level visibility
+- **Config and CloudTrail integration**: resource inventory, compliance posture, and audit log analysis
+- **Agentless workload scanning**: vulnerability assessment of EC2 instances without installing agents
+- **Agent installation (optional)**: runtime threat detection, file integrity monitoring, and host-level visibility
 
 This guide covers integration via CloudFormation.
 
