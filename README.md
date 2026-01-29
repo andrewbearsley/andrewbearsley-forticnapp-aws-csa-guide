@@ -10,7 +10,7 @@ A FortiCNAPP Cloud Security Assessment (CSA) provides visibility into your AWS e
 - Agentless workload scanning: vulnerability assessment of EC2 instances without installing agents
 - Agent installation (optional): runtime threat detection, file integrity monitoring, and host-level visibility
 
-This guide covers deploying all three via CloudFormation.
+This guide covers integration via CloudFormation.
 
 ## Quickstart
 
