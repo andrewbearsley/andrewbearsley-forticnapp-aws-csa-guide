@@ -12,6 +12,7 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 2. Select your trail and note:
    - S3 bucket name (under Storage location)
    - SNS topic ARN (under SNS notification delivery)
+   - KMS key ARN (under Log file SSE-KMS encryption, if enabled)
 3. Enable SNS notifications (if not already enabled):
    - Select your trail, click Edit
    - Scroll to SNS notification delivery
@@ -36,3 +37,29 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 6. Create the stack and wait for completion.
 
 7. Return to the FortiCNAPP Console to verify the integration status.
+
+8. (Optional) Update the KMS Key Policy for cross-account role access. This is only required if CloudTrail logs are KMS encrypted.
+
+   Find the Lacework role ARN in the CloudFormation stack outputs, or look it up in IAM:
+
+   ```bash
+   aws iam list-roles --query "Roles[?contains(RoleName, 'laceworkcwssarole')].Arn" --output text
+   ```
+
+   Add this statement to the KMS key policy:
+
+   ```json
+   {
+     "Sid": "Allow Lacework to decrypt logs",
+     "Effect": "Allow",
+     "Principal": {
+       "AWS": [
+         "arn:aws:iam::<account-id>:role/<lacework-account-name>-laceworkcwssarole"
+       ]
+     },
+     "Action": [
+       "kms:Decrypt"
+     ],
+     "Resource": "*"
+   }
+   ```
