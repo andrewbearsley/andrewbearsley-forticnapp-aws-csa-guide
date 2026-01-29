@@ -4,6 +4,19 @@ For standalone AWS accounts or organizations not using Control Tower, deploy usi
 
 Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/177498/aws-integration-using-cloudformation" target="_blank">AWS Integration Using CloudFormation</a>
 
+## Prerequisites (for existing CloudTrail integration)
+
+If you plan to use CloudTrail+Configuration with an existing trail, gather these details first:
+
+1. In the AWS Console, navigate to CloudTrail > Trails
+2. Select your trail and note:
+   - S3 bucket name (under Storage location)
+   - SNS topic ARN (under SNS notification delivery, if enabled)
+
+If SNS notifications are not enabled on your trail, you will need to either:
+- Enable SNS notifications on the existing trail, or
+- Let FortiCNAPP create a new trail during setup
+
 ## Steps
 
 1. Log into the AWS account where you want to deploy the integration.
