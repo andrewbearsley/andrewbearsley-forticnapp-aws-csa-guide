@@ -14,7 +14,7 @@ This guide covers integration via CloudFormation.
 
 ## Quickstart
 
-1. Provision FortiCNAPP (account, license, instance): [Step 1](#provision-forticnapp)
+1. Provision FortiCNAPP: [Step 1](#provision-forticnapp)
 2. Deploy Config and CloudTrail integration via CloudFormation
    - AWS Organizations with Control Tower: [Step 2a](aws-config-cloudtrail-control-tower.md)
    - AWS Organizations without Control Tower: [Step 2b](aws-config-cloudtrail-org.md)
@@ -38,6 +38,8 @@ This guide covers integration via CloudFormation.
 
 2. Register your FortiCNAPP license:
    - In FortiCloud, navigate to Dashboard > Register Now
+   - Paste registration code from license email
+   - Next, accept the terms and conditions, Done
 
 3. Create FortiCNAPP instance (first time only):
    - Navigate to Services > Show More > Lacework FortiCNAPP
