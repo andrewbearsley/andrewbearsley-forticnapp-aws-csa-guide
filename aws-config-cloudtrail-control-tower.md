@@ -84,6 +84,22 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
 
    A request succeeds only when both allow it.
 
+   **Why both.** Most AWS services use a union model, where an identity policy or a resource policy is enough within one account. KMS inverts that. Every key has exactly one key policy, it cannot be deleted, and nothing may use the key unless that policy permits it. This keeps the key owner in the decision, so nobody can grant themselves decryption rights by editing IAM alone.
+
+   The default key policy carries a statement that looks like this:
+
+   ```json
+   {
+     "Sid": "Enable IAM User Permissions",
+     "Effect": "Allow",
+     "Principal": { "AWS": "arn:aws:iam::<account-id>:root" },
+     "Action": "kms:*",
+     "Resource": "*"
+   }
+   ```
+
+   It does not mean the root user can do anything. It means the key delegates its access decisions to IAM in that one account, and that delegation is the only reason KMS usually feels like every other service. It does not reach across an account boundary, which is why the Control Tower case always needs the explicit statement.
+
    Under Control Tower the CloudTrail KMS key normally lives in the management account, while the `laceworkcwssarole` role is created in the Log Archive account. That makes this a cross-account grant, so the key policy must name the role. Account-root delegation does not cross account boundaries.
 
    Find the role ARN. Run this in the Log Archive account:

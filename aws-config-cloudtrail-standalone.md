@@ -84,7 +84,25 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
    | Answers | what may this role do | who may use this key |
    | Created by | the CloudFormation stack | you |
 
-   A request succeeds only when both allow it. Within a single account the key policy can delegate that decision to IAM, which is what the check below tests for.
+   A request succeeds only when both allow it.
+
+   **Why both.** Most AWS services use a union model, where an identity policy or a resource policy is enough within one account. KMS inverts that. Every key has exactly one key policy, it cannot be deleted, and nothing may use the key unless that policy permits it. This keeps the key owner in the decision, so nobody can grant themselves decryption rights by editing IAM alone.
+
+   The default key policy carries a statement that looks like this:
+
+   ```json
+   {
+     "Sid": "Enable IAM User Permissions",
+     "Effect": "Allow",
+     "Principal": { "AWS": "arn:aws:iam::<account-id>:root" },
+     "Action": "kms:*",
+     "Resource": "*"
+   }
+   ```
+
+   It does not mean the root user can do anything. It means the key delegates its access decisions to IAM in that one account. That delegation is the only reason KMS usually feels like every other service, and it does not reach across an account boundary.
+
+   The check below tests whether your key still has it.
 
    Check the key policy before you change anything. This also gives you a backup:
 
