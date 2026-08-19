@@ -2,7 +2,7 @@
 
 For AWS Organizations using Control Tower, deploy via the Control Tower CloudFormation template. This enrolls all existing and future accounts automatically.
 
-Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/399671/aws-control-tower-integration-using-cloudformation" target="_blank">AWS Control Tower Integration Using CloudFormation</a>
+Docs: <a href="https://docs.fortinet.com/document/forticnapp/latest/administration-guide/821177/cloudformation-configuration" target="_blank">CloudFormation configuration</a>
 
 Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integration" target="_blank">forticnapp-cloud-integration</a>
 
@@ -21,6 +21,7 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
 
 4. Check if the CloudTrail S3 bucket (in the Log Archive Account) has KMS encryption enabled.
    - If enabled, note the KMS Key Identifier ARN (eg arn:aws:kms:us-west-2:123456789012:key/12345678-1234-1234-1234-123456789012)
+   - Note the account ID in that ARN. Control Tower normally creates this key in the management account, not the Log Archive account. Step 8 depends on it.
 
 5. Check if the CloudTrail S3 bucket has SNS notifications enabled.
    - If enabled, note the SNS Topic ARN
@@ -42,32 +43,65 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
 
 7. Create the stack and wait for completion.
 
-8. (Optional) Update the KMS Key Policy for cross-account role access. This is only required if CloudTrail S3 logs are KMS encrypted.
+8. Update the KMS Key Policy for cross-account role access. Required if the CloudTrail S3 logs are KMS encrypted.
 
-   Find the Lacework role ARN:
+   AWS needs two separate permissions here, and both must allow:
 
-   Option A: Check CloudFormation stack outputs for the role ARN.
+   - The KMS Key Identifier ARN you supplied at step 6 grants the **identity side**, on the FortiCNAPP role.
+   - The key policy below grants the **resource side**, on the key itself.
 
-   Option B: Look up the role in IAM in the log archive account:
+   Supplying the ARN at step 6 does not remove the need for this step.
+
+   Under Control Tower the CloudTrail KMS key normally lives in the management account, while the `laceworkcwssarole` role is created in the Log Archive account. That makes this a cross-account grant, so the key policy must name the role. Account-root delegation does not cross account boundaries.
+
+   Find the role ARN. Run this in the Log Archive account:
 
    ```bash
-   aws iam list-roles --query "Roles[?contains(RoleName, 'laceworkcwssarole')].Arn" --output text
+   aws iam list-roles \
+     --query "Roles[?contains(RoleName, 'laceworkcwssarole')].Arn" --output text
    ```
 
-   Add this statement to the KMS key policy:
+   Discover the name rather than assuming it. The suffix varies between deployments.
+
+   Statement to add:
 
    ```json
    {
-     "Sid": "Allow Lacework to decrypt logs",
+     "Sid": "AllowLaceworkDecryptCloudTrailLogs",
      "Effect": "Allow",
      "Principal": {
-       "AWS": [
-         "arn:aws:iam::<log-archive-account-id>:role/<lacework-account-name>-laceworkcwssarole"
-       ]
+       "AWS": "arn:aws:iam::<log-archive-account-id>:role/<role-name>"
      },
-     "Action": [
-       "kms:Decrypt"
-     ],
+     "Action": "kms:Decrypt",
      "Resource": "*"
    }
    ```
+
+   `"Resource": "*"` is correct. In a key policy the resource is the key that carries the policy.
+
+   Apply it from the command line. Run this in the account that owns the key:
+
+   ```bash
+   KEY_ARN="arn:aws:kms:<region>:<key-owner-account-id>:key/<key-id>"
+   ROLE_ARN="arn:aws:iam::<log-archive-account-id>:role/<role-name>"
+
+   aws kms get-key-policy --key-id "$KEY_ARN" --policy-name default \
+     --query Policy --output text > key-policy-backup.json
+
+   jq --arg role "$ROLE_ARN" '.Statement += [{
+     "Sid": "AllowLaceworkDecryptCloudTrailLogs",
+     "Effect": "Allow",
+     "Principal": {"AWS": $role},
+     "Action": "kms:Decrypt",
+     "Resource": "*"
+   }]' key-policy-backup.json > key-policy-new.json
+
+   jq -r '.Statement[].Sid' key-policy-new.json
+
+   aws kms put-key-policy --key-id "$KEY_ARN" --policy-name default \
+     --policy file://key-policy-new.json
+   ```
+
+   `put-key-policy` replaces the whole policy. It does not append. Always merge into the existing document. Writing the statement on its own removes the root statement and locks the key.
+
+9. Verify. Open the CloudTrail dashboard in the FortiCNAPP console and check the API Error Information table. "Access Denied" decryption errors mean the key policy is still missing the statement. They stop once it applies.
