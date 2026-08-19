@@ -45,12 +45,44 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
 
 8. Update the KMS Key Policy for cross-account role access. Required if the CloudTrail S3 logs are KMS encrypted.
 
-   AWS needs two separate permissions here, and both must allow:
+   AWS needs two separate permissions here, and both must allow. Supplying the ARN at step 6 does not remove the need for this step.
 
-   - The KMS Key Identifier ARN you supplied at step 6 grants the **identity side**, on the FortiCNAPP role.
-   - The key policy below grants the **resource side**, on the key itself.
+   **Identity side. An IAM policy, attached to the role.** The CloudFormation stack creates this for you from the KMS Key Identifier ARN at step 6. It sits in the inline `LaceworkCWSPolicy` on the `laceworkcwssarole` role:
 
-   Supplying the ARN at step 6 does not remove the need for this step.
+   ```json
+   {
+     "Sid": "DecryptLogFiles",
+     "Effect": "Allow",
+     "Action": [ "kms:Decrypt" ],
+     "Resource": [ "arn:aws:kms:<region>:<key-owner-account-id>:key/<key-id>" ]
+   }
+   ```
+
+   **Resource side. A key policy, attached to the key.** You add this yourself, in step 8:
+
+   ```json
+   {
+     "Sid": "AllowLaceworkDecryptCloudTrailLogs",
+     "Effect": "Allow",
+     "Principal": {
+       "AWS": "arn:aws:iam::<log-archive-account-id>:role/<role-name>"
+     },
+     "Action": "kms:Decrypt",
+     "Resource": "*"
+   }
+   ```
+
+   Telling them apart:
+
+   | | Identity policy | Key policy |
+   |---|---|---|
+   | Attached to | the role | the key |
+   | `Principal` | absent, the role is implied | required, names the role |
+   | `Resource` | the key ARN | `*`, meaning this key |
+   | Answers | what may this role do | who may use this key |
+   | Created by | the CloudFormation stack | you |
+
+   A request succeeds only when both allow it.
 
    Under Control Tower the CloudTrail KMS key normally lives in the management account, while the `laceworkcwssarole` role is created in the Log Archive account. That makes this a cross-account grant, so the key policy must name the role. Account-root delegation does not cross account boundaries.
 

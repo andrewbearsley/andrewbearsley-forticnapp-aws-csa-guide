@@ -47,10 +47,44 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 
 8. Update the KMS Key Policy. Required if the CloudTrail logs are KMS encrypted and the key policy does not already delegate to IAM.
 
-   AWS needs two separate permissions here, and both must allow:
+   AWS needs two separate permissions here, and both must allow.
 
-   - The KMS key ARN you supplied during setup grants the **identity side**, on the FortiCNAPP role.
-   - The key policy grants the **resource side**, on the key itself.
+   **Identity side. An IAM policy, attached to the role.** The CloudFormation stack creates this for you from the KMS key ARN you supplied during setup. It sits in the inline `LaceworkCWSPolicy` on the `laceworkcwssarole` role:
+
+   ```json
+   {
+     "Sid": "DecryptLogFiles",
+     "Effect": "Allow",
+     "Action": [ "kms:Decrypt" ],
+     "Resource": [ "arn:aws:kms:<region>:<account-id>:key/<key-id>" ]
+   }
+   ```
+
+   **Resource side. A key policy, attached to the key.** This is the one you may need to add:
+
+   ```json
+   {
+     "Sid": "AllowLaceworkDecryptCloudTrailLogs",
+     "Effect": "Allow",
+     "Principal": {
+       "AWS": "arn:aws:iam::<account-id>:role/<role-name>"
+     },
+     "Action": "kms:Decrypt",
+     "Resource": "*"
+   }
+   ```
+
+   Telling them apart:
+
+   | | Identity policy | Key policy |
+   |---|---|---|
+   | Attached to | the role | the key |
+   | `Principal` | absent, the role is implied | required, names the role |
+   | `Resource` | the key ARN | `*`, meaning this key |
+   | Answers | what may this role do | who may use this key |
+   | Created by | the CloudFormation stack | you |
+
+   A request succeeds only when both allow it. Within a single account the key policy can delegate that decision to IAM, which is what the check below tests for.
 
    Check the key policy before you change anything. This also gives you a backup:
 
