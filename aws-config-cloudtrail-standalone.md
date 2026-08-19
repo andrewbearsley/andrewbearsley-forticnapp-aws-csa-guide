@@ -52,13 +52,16 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
    - The KMS key ARN you supplied during setup grants the **identity side**, on the FortiCNAPP role.
    - The key policy grants the **resource side**, on the key itself.
 
-   Check the key policy before you change anything:
+   Check the key policy before you change anything. This also gives you a backup:
 
    ```bash
    KEY_ARN="arn:aws:kms:<region>:<account-id>:key/<key-id>"
+
    aws kms get-key-policy --key-id "$KEY_ARN" --policy-name default \
      --query Policy --output text > key-policy-backup.json
-   jq '.Statement[] | select(.Principal.AWS | tostring | endswith(":root"))' key-policy-backup.json
+
+   jq '[.Statement] | flatten | .[]
+       | select((.Principal.AWS? | tostring) | endswith(":root"))' key-policy-backup.json
    ```
 
    If that returns the default `Enable IAM User Permissions` statement, the identity side alone is enough and you can skip the rest of this step. That shortcut applies only when the key and the role sit in the same account.
@@ -90,25 +93,92 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 
    `"Resource": "*"` is correct. In a key policy the resource is the key that carries the policy.
 
-   Apply it from the command line:
+   **Add the statement to the existing key policy. Do not replace the policy.**
+
+   The key policy already carries statements that let CloudTrail encrypt logs and let the account manage the key. Removing any of them breaks log delivery.
+
+   Edit the policy JSON:
+
+   - Open KMS, Customer managed keys, select the key, Key policy tab
+   - Choose Edit. Switch to policy view if the console opens the visual editor
+   - Add the statement to the existing `Statement` array
+   - Save
+
+   Your key already has statements. Keep every one of them and append the new statement to the end of the array. Note the comma after the preceding statement, which is the most common mistake.
+
+   The result looks roughly like this. Your existing statements will differ, so treat the first two as illustrative and copy only the last one:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Id": "key-consolepolicy-3",
+     "Statement": [
+       {
+         "Sid": "Enable IAM User Permissions",
+         "Effect": "Allow",
+         "Principal": { "AWS": "arn:aws:iam::<account-id>:root" },
+         "Action": "kms:*",
+         "Resource": "*"
+       },
+       {
+         "Sid": "Allow CloudTrail to encrypt logs",
+         "Effect": "Allow",
+         "Principal": { "Service": "cloudtrail.amazonaws.com" },
+         "Action": "kms:GenerateDataKey*",
+         "Resource": "*"
+       },
+       {
+         "Sid": "AllowLaceworkDecryptCloudTrailLogs",
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": "arn:aws:iam::<account-id>:role/<role-name>"
+         },
+         "Action": "kms:Decrypt",
+         "Resource": "*"
+       }
+     ]
+   }
+   ```
+
+   Restore from `key-policy-backup.json` if anything goes wrong.
+
+   <details>
+   <summary>Applying from the CLI instead</summary>
+
+   `put-key-policy` replaces the entire policy. It does not append. Only use this if you are comfortable with that.
 
    ```bash
    ROLE_ARN="arn:aws:iam::<account-id>:role/<role-name>"
 
-   jq --arg role "$ROLE_ARN" '.Statement += [{
-     "Sid": "AllowLaceworkDecryptCloudTrailLogs",
-     "Effect": "Allow",
-     "Principal": {"AWS": $role},
-     "Action": "kms:Decrypt",
-     "Resource": "*"
-   }]' key-policy-backup.json > key-policy-new.json
+   # Normalise Statement to an array, then append
+   jq --arg role "$ROLE_ARN" '
+     .Statement = ((.Statement | if type == "array" then . else [.] end) + [{
+       "Sid": "AllowLaceworkDecryptCloudTrailLogs",
+       "Effect": "Allow",
+       "Principal": {"AWS": $role},
+       "Action": "kms:Decrypt",
+       "Resource": "*"
+     }])' key-policy-backup.json > key-policy-new.json
 
-   jq -r '.Statement[].Sid' key-policy-new.json
+   # Check before you apply: the new file must keep every original Sid and add one
+   diff <(jq -r '[.Statement]|flatten|.[].Sid // "NO_SID"' key-policy-backup.json | sort) \
+        <(jq -r '[.Statement]|flatten|.[].Sid // "NO_SID"' key-policy-new.json | sort)
 
    aws kms put-key-policy --key-id "$KEY_ARN" --policy-name default \
      --policy file://key-policy-new.json
    ```
 
-   `put-key-policy` replaces the whole policy. It does not append. Always merge into the existing document. Writing the statement on its own removes the root statement and locks the key.
+   The `diff` must show exactly one added line. Anything else means stop.
+
+   AWS runs a lockout safety check that rejects a policy leaving the key unmanageable, so the worst case is blocked. That check does not protect the CloudTrail statements, so a bad merge still breaks log delivery.
+
+   Roll back with:
+
+   ```bash
+   aws kms put-key-policy --key-id "$KEY_ARN" --policy-name default \
+     --policy file://key-policy-backup.json
+   ```
+
+   </details>
 
 9. Verify. Open the CloudTrail dashboard in the FortiCNAPP console and check the API Error Information table. "Access Denied" decryption errors mean the key policy is still missing the statement. They stop once it applies.
