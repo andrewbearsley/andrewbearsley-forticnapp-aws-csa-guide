@@ -72,6 +72,8 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
    }
    ```
 
+   Both placeholders name the role in the Log Archive account. See **Finding the two values** below.
+
    Telling them apart:
 
    | | Identity policy | Key policy |
@@ -102,14 +104,32 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
 
    Under Control Tower the CloudTrail KMS key normally lives in the management account, while the `laceworkcwssarole` role is created in the Log Archive account. That makes this a cross-account grant, so the key policy must name the role. Account-root delegation does not cross account boundaries.
 
-   Find the role ARN. Run this in the Log Archive account:
+   **Finding the two values.**
+
+   Both come from the Log Archive account, not the account that owns the key. The role name is `<forticnapp-tenant-name>-laceworkcwssarole`, so the tenant name is a prefix, not a suffix. Read it rather than assuming it.
+
+   *From IAM. Simplest, and always available.*
+
+   1. Switch into the Log Archive account.
+   2. Open **IAM > Roles** and search `laceworkcwssarole`.
+   3. Open the role. Copy the ARN shown at the top of the Summary panel.
+
+   The copied ARN is the complete `Principal.AWS` value. Both halves are in it, so you do not need to assemble them yourself.
+
+   *From CloudFormation.* The role ARN is a stack output, but not on the stack you created at step 6. That stack has no outputs. The role is created by a StackSet instance in the Log Archive account.
+
+   1. Switch into the Log Archive account and open **CloudFormation > Stacks**.
+   2. Open the stack named `StackSet-Lacework-Control-Tower-CloudTrail-Log-Account-<forticnapp-tenant-name>-<id>`.
+   3. Read the **Outputs** tab. `RoleARN` is the value you need.
+
+   *From the CLI.* Run this in the Log Archive account. It prints the same ARN:
 
    ```bash
    aws iam list-roles \
      --query "Roles[?contains(RoleName, 'laceworkcwssarole')].Arn" --output text
    ```
 
-   Discover the name rather than assuming it. The suffix varies between deployments.
+   The key ARN from step 4 carries a different account ID. Control Tower creates the CloudTrail key in the management account and the stack creates the role in the Log Archive account. That mismatch is expected, and it is the reason the key policy needs this statement.
 
    Statement to add:
 
@@ -183,6 +203,8 @@ Reference: <a href="https://github.com/andrewbearsley/forticnapp-cloud-integrati
      ]
    }
    ```
+
+   The last statement is the one you add. **Finding the two values** above gives the account ID and role name.
 
    Restore from `key-policy-backup.json` if anything goes wrong.
 

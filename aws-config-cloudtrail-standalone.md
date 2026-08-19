@@ -74,6 +74,8 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
    }
    ```
 
+   Both placeholders name the role the stack created. See **Finding the two values** below.
+
    Telling them apart:
 
    | | Identity policy | Key policy |
@@ -120,14 +122,26 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
 
    Add the statement when the key policy has been locked down, or when the key lives in a different account to the role. Account-root delegation does not cross account boundaries.
 
-   Find the role ARN in the CloudFormation stack outputs, or look it up in IAM:
+   **Finding the two values.**
+
+   The role name is `<forticnapp-tenant-name>-laceworkcwssarole`, so the tenant name is a prefix, not a suffix. Read it rather than assuming it.
+
+   *From IAM.*
+
+   1. Open **IAM > Roles** in the account where the FortiCNAPP stack ran.
+   2. Search `laceworkcwssarole` and open the role.
+   3. Copy the ARN shown at the top of the Summary panel.
+
+   The copied ARN is the complete `Principal.AWS` value. The account ID and the role name are both in it, so you do not need to assemble them yourself.
+
+   *From the CLI.* This prints the same ARN:
 
    ```bash
    aws iam list-roles \
      --query "Roles[?contains(RoleName, 'laceworkcwssarole')].Arn" --output text
    ```
 
-   Discover the name rather than assuming it. The suffix varies between deployments.
+   Do not expect the role ARN on the CloudFormation stack outputs. The integration templates do not publish it.
 
    Statement to add:
 
@@ -191,6 +205,8 @@ If you plan to use CloudTrail+Configuration with an existing trail, gather these
      ]
    }
    ```
+
+   The last statement is the one you add. **Finding the two values** above gives the account ID and role name.
 
    Restore from `key-policy-backup.json` if anything goes wrong.
 
